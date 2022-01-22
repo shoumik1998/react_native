@@ -1,20 +1,25 @@
 import { Navigation } from "react-native-navigation";
-import  HomePage from './Pages/Homepage';
+import  Rand from './Pages/Rand';
 import  Aboutpage from './Pages/AboutPage';
-import SettingsPage from './Pages/SettingsPage';
+import HomePage from './Pages/HomePage';
 import Contact from "./Contact";
 import ModalScreen from "./Pages/ModalScreen";
 import Search from "./Pages/Search";
 import Details from "./Pages/Details";
+import Login from "./Pages/Login";
+import Registration from "./Pages/Registration";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 Navigation.registerComponent('Home',()=>HomePage)
 Navigation.registerComponent("About", () => Aboutpage);
-Navigation.registerComponent("Settings", () => SettingsPage);
+Navigation.registerComponent("Settings", () => HomePage);
 Navigation.registerComponent('Contact',()=>Contact)
 Navigation.registerComponent('Modal',()=>ModalScreen)
 Navigation.registerComponent('Search',()=>Search)
 Navigation.registerComponent('Details',()=>Details)
+Navigation.registerComponent('Login',()=>Login)
+Navigation.registerComponent('Registration',()=>Registration)
 
 
 Navigation.setDefaultOptions({
@@ -41,38 +46,74 @@ Navigation.setDefaultOptions({
 })
 
 
-Navigation.events().registerAppLaunchedListener(()=>{
-  Navigation.setRoot({
-    root:{
-      sideMenu:{
-        left:{
-          component:{
-            name:'About'
-          }
-        },
-        center:{
-          stack:{
-            id:'mainscreen',
-            children:[
-              {
-                component:{
-                  name:'Home',
-                  options:{
+Navigation.events().registerAppLaunchedListener(async ()=>{
+  // this.state={
+  //   user_name:'',
+  //   password:''
+  // }
+  //
+  //
+  // try {
+  //   this.setState({user_name: await AsyncStorage.getItem("user_name")})
+  //   this.setState({password: await AsyncStorage.getItem("password")})
+  // }catch (e) {
+  //
+  // }
 
-                    topBar:{
-                      leftButtons:{
-                        id:'button',
-                        icon:require('./Pages/menuicon.png')
-                      }
-                    }
+
+  try {
+    var user_name=await AsyncStorage.getItem("user_name")
+    var password=await AsyncStorage.getItem("password")
+
+  }catch (e) {
+
+  }
+
+
+
+  if (user_name!==null && password!==null) {
+    Navigation.setRoot({
+      root: {
+
+            stack: {
+              id: "mainscreen",
+              children: [
+                {
+                  component: {
+                    name: "Contact",
+                    options: {
+
+                      topBar: {
+                        visible:false
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          }
+    });
+  } else {
+    Navigation.setRoot({
+      root:{
+        stack:{
+          children:[
+            {
+              component:{
+                name:'Login',
+                options:{
+                  topBar:{
+                    visible:false
                   }
                 }
               }
-            ]
-          }
+            }
+          ]
         }
       }
-    }
-  })
+    })
+  }
+
+
 })
 

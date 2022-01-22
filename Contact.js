@@ -21,7 +21,7 @@ class Contact extends Component {
 
   fetchData=(text)=>{
 
-      const url='http://192.168.100.22:8088/lf';
+      const url='http://192.168.0.23:8001/lf';
       const config={method:'POST', headers:{
           Accept: 'application/json',
           'Content-Type': 'application/json'

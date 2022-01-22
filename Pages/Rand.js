@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Button, Text, View } from "react-native";
+import { Alert, Button, Text, View } from "react-native";
 import { Navigation } from "react-native-navigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-class Homepage extends Component {
+class Rand extends Component {
 
 
 
@@ -10,91 +11,84 @@ class Homepage extends Component {
 constructor(props) {
   super(props);
   Navigation.events().bindComponent(this)
+  this.state={
+    name:''
+  }
 }
 
-goAbout=()=>{
-  Navigation.push(this.props.componentId,{
-    component:{
-      name:'About',
-      options:{
-        topBar:{
-          title:{
-            component:{
-              name:'Search',
-              alignment:"fill"
-            }
-          }
-        },
-        animations:{
-          push:{
-            elementTransitions:[
-              {
-                id:'textID',
-                alpha:{
-                  from:0,
-                  duration:300,
-                },
-                translationY:{
-                  from:16,
-                  duration:300
+getV=async ()=>{
+  try {
+    return await AsyncStorage.getItem("user_name")
+  }catch (e) {
+
+  }
+}
+
+// componentDidMount () {
+//
+//   try {
+//      AsyncStorage.setItem("user_name","Shoumik")
+//     un=this.getV()
+//     this.setState({name: un})
+//   }catch (e) {
+//
+//   }
+//
+// }
+
+  goAbout=async ()=>{
+  try {
+    await AsyncStorage.setItem("u",'Ahammed...')
+    Alert.alert('stored')
+  }catch (e) {
+          this.setState({name:e.toString()})
+  }
+
+
+
+
+}
+goModal=async () => {
+  try {
+    var name_=await  AsyncStorage.getItem("user_name")
+    this.setState({name:name_})
+
+  } catch (e) {
+
+  }
+}
+gosettings=async ()=>{
+  try {
+    await  AsyncStorage.setItem("user_name",'')
+    await  AsyncStorage.setItem("password",'')
+    Navigation.setRoot({
+      root:{
+        stack:{
+          children:[
+            {
+              component:{
+                name:'Login',
+                options:{
+                  topBar:{
+                    visible:false
+                  }
                 }
               }
-            ],
-            content:{
-              translationX:{
-
-                from: require('react-native').Dimensions.get('window').width,
-                to:0, duration:300
-              }
-            },
-
-          },
-          pop:{
-            content:{
-              translationX:{
-                from:0,
-                to: require('react-native').Dimensions.get('window').width,
-                duration:300
-
-              }
-            },
-
-          }
-        }
-      }
-    }
-  })
-
-}
-goModal=()=>{
-  Navigation.showModal({
-    component:{
-      name:'Modal',
-      options:{
-        animations:{
-          showModal:{
-            alpha:{
-              from:100,
-              to:100,duration:300
             }
-          }
+          ]
         }
       }
-    }
+    })
 
-  })
-}
-gosettings=()=>{
-  Navigation.push(this.props.componentId,{
-    component:{
-      name:'Settings'
-    }
-  })
+  }catch (e) {
+    Alert.alert(e.toString())
+  }
+
 }
 goContact=()=>{
   Navigation.push(this.props.componentId, {
     component:{
-      name:'Contact',
+      name:'Login',
       options:{
         topBar:{
           visible:false
@@ -145,6 +139,7 @@ goContact=()=>{
         </View>
         <View style={{margin:10}}>
           <Button title='Contact' onPress={this.goContact}/>
+          <Text>{this.state.name}</Text>
         </View>
       </View>
     );
@@ -163,4 +158,4 @@ goContact=()=>{
   }
 }
 
-export default Homepage;
+export default Rand;

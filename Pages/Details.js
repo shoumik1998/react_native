@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Image, Text, View } from "react-native";
+import {HomePage,child} from "./HomePage";
 
 class Details extends Component {
+  v=new HomePage();
+
+  child();
   render() {
     return (
       <View>
