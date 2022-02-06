@@ -9,9 +9,10 @@ import Details from "./Pages/Details";
 import Login from "./Pages/Login";
 import Registration from "./Pages/Registration";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AShop from "./Pages/AShop";
 
 
-Navigation.registerComponent('Home',()=>HomePage)
+Navigation.registerComponent('Home',()=>HomePage,)
 Navigation.registerComponent("About", () => Aboutpage);
 Navigation.registerComponent("Settings", () => HomePage);
 Navigation.registerComponent('Contact',()=>Contact)
@@ -20,6 +21,8 @@ Navigation.registerComponent('Search',()=>Search)
 Navigation.registerComponent('Details',()=>Details)
 Navigation.registerComponent('Login',()=>Login)
 Navigation.registerComponent('Registration',()=>Registration)
+Navigation.registerComponent('AShop',()=>AShop,"ashop_id")
+
 
 
 Navigation.setDefaultOptions({
@@ -64,6 +67,10 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
   try {
     var user_name=await AsyncStorage.getItem("user_name")
     var password=await AsyncStorage.getItem("password")
+    var country=await AsyncStorage.getItem("country")
+    var district=await AsyncStorage.getItem("district")
+    var subdistrict= await AsyncStorage.getItem("subdistrict")
+    var region=await AsyncStorage.getItem("region")
 
   }catch (e) {
 
@@ -71,7 +78,7 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
 
 
 
-  if (user_name!==null && password!==null) {
+  if (user_name!==null && password!==null && country ===null && district===null && subdistrict===null && region===null) {
     Navigation.setRoot({
       root: {
 
@@ -93,7 +100,29 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
             },
           }
     });
-  } else {
+  }else if (country !==null && district !==null && subdistrict !==null && region!==null) {
+    Navigation.setRoot({
+      root:{
+        stack:{
+          id:'home_screen',
+          children:[
+            {
+              component:{
+                name:'Home',
+                id:"h_screen",
+                options:{
+                  topBar:{
+                    visible:false
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    })
+
+  }else {
     Navigation.setRoot({
       root:{
         stack:{

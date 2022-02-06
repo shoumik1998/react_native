@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+
 import {
   ActivityIndicator,
   Alert, Button,
   FlatList,
   Image, Keyboard, KeyboardAvoidingView, KeyboardAvoidingViewComponent, Modal, SafeAreaView,
-  Text, TextInput,
+  Text,TextInput,
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -13,6 +14,10 @@ import {
 import { Navigation } from "react-native-navigation";
 import { FloatingMenu } from "react-native-floating-action-menu";
 import { color } from "native-base/lib/typescript/theme/styled-system";
+import Shop_API from "../API/Shop_API";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import  Product_child   from "../Components/Product_card";
+import Transition from "./Transition/Transition";
 
 
 class HomePage extends Component {
@@ -32,12 +37,16 @@ class HomePage extends Component {
       isLoading: true,
       refresh_status: "none",
       menuOpen: false,
+      change_text:""
 
     };
 
   }
 
-   refresh_button = () => {
+
+
+
+  refresh_button = () => {
     return (
       <TouchableOpacity style={{
         borderWidth: 3,
@@ -83,80 +92,48 @@ class HomePage extends Component {
   }
 
 
-  fetch_all = async (product_name) => {
-    if (product_name != null) {
-      url = "http://192.168.0.23:8001/fetching_pro_by_name_specific_region";
-    } else {
-      url = "http://192.168.0.23:8001/fetch_pro_after_location_search";
+   async fetch_all(product_name) {
+     
+    try {
+      var country = await AsyncStorage.getItem("country")
+      var district = await AsyncStorage.getItem("district")
+      var subdistrict = await AsyncStorage.getItem("subdistrict")
+      var region = await AsyncStorage.getItem("region")
+    } catch (error) {
+
     }
 
-    const config = {
-      method: "POST", headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        region: this.props.region,
-        country: this.props.country,
-        district: this.props.district,
-        subdistrict: this.props.subdistrict,
-        product_name: product_name,
-      }),
-    };
+    const response_fetch_all = await Shop_API.onFetch_After_Location_SearchAPI(region,
+      country, district, subdistrict, product_name)
 
-    fetch(url, config).then((response) => response.text())
-      .then((json) => {
-        this.setState({ isLoading: false });
-        const jsonResponse = json.length ? JSON.parse(json) : {};
-        this.setState({ all_data: this.state.all_data.concat(jsonResponse) });
+    this.setState({ all_data: this.state.all_data.concat(response_fetch_all) })
 
-      }).catch(error => {
-      console.log(error);
-    });
+
+    
   };
 
-   child = ({ name,description,  price, imagepath,currency }) => {
-    return (
-      <View style={{
-        shadowRadius: 10,
-        elevation: 5,
-        margin: 5,
-        borderRadius: 5,
-        backgroundColor: "white",
-        shadowOpacity: 2,
-        width: 160,
-        height: 200,
-      }}>
-        <View style={{ margin: 10, alignSelf: "center" }}>
-          <Text style={{color: "red"}} onPress={() => Alert.alert("hmmm")}>{name}</Text>
-        </View>
+  
 
-        <View style={{ alignSelf: "center" }}>
-          <Image style={{ width: 100, height: 100 }} source={{ uri: imagepath }} />
-        </View>
-
-        <View style={{ marginTop: "auto", padding: "5%", alignItems: "center" }}>
-          <Text style={{color: "blue", fontSize:12}}>{description}</Text>
-        </View>
-
-        <View style={{ marginTop: "auto", padding: "5%", alignItems: "center" }}>
-          <Text>{price +" "+ currency }</Text>
-        </View>
-
-      </View>
-    );
-  };
-
-  go_details = (name) => {
+  go = (path) => {
     Navigation.push(this.props.componentId, {
       component: {
         name: "Details",
         passProps: {
-          imagepath: name,
+          imagepath: path,
         },
+        options:{
+          topBar:{
+            visible:false
+          }
+        }
       },
     });
   };
+
+  aler=async()=>{
+    this.fetch_all()
+    
+  }
 
   renderFooter = () => {
     return (
@@ -190,6 +167,7 @@ class HomePage extends Component {
   render() {
     return (
       <KeyboardAvoidingView style={{ backgroundColor: "white", flex: 100, justifyContent: "flex-start" }}>
+        
         <SafeAreaView style={{
           flex: 10,
           elevation: 6,
@@ -203,15 +181,14 @@ class HomePage extends Component {
             this.textInput.focus() + this.setState({ status_search: "none", status_close: "flex", editable: true });
           }}>
             <Image style={{ margin: "2%", width: "8%", height: "50%", display: this.state.status_search }}
-                   source={require("../Pages/searchicon.png")} />
+              source={require("../Pages/searchicon.png")} />
           </TouchableWithoutFeedback>
           <View style={{ flexDirection: "row", display: this.state.status_close, justifyContent: "center" }}>
             <TouchableWithoutFeedback onPress={() => {
               Alert.alert("kuyg");
             }}>
-              <TextInput editable={this.state.editable} ref={input => this.textInput = input} onChangeText={(text) => {
-                this.fetch_all(text) + this.setState({ product_name: text });
-              }} placeholder="search" style={{ width: "80%", height: "100%" }} />
+               <TextInput onChange={async()=>{}} editable={this.state.editable} ref={input => this.textInput = input} 
+              onChangeText={async(text)=> {this.fetch_all }} placeholder="search" style={{ width: "80%", height: "100%" }} /> 
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => {
@@ -222,7 +199,7 @@ class HomePage extends Component {
               });
             }}>
               <Image style={{ margin: "2%", width: "8%", height: "50%", display: this.state.status_close }}
-                     source={require("../Pages/close_icon.png")} />
+                source={require("../Pages/close_icon.png")} />
             </TouchableWithoutFeedback>
           </View>
         </SafeAreaView>
@@ -236,60 +213,62 @@ class HomePage extends Component {
             onEndReached={this.loarmore}
             ListFooterComponent={this.renderFooter}
             style={{ alignSelf: "center" }} numColumns={2} data={this.state.all_data} renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => {
-              this.go_details(item.imagepath);
-            }} onLongPress={() => this.modal()}>
-              <this.child description={item.description} name={item.name} imagepath={item.imagepath} price={item.price} currency={item.currency} />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                  this.go(item.imagepath)
+                  //Transition.Go("Details",item.imagepath,this.props.componentId)
+              }} onLongPress={() => this.modal()}>
+                {/* <this.child description={item.description} name={item.name} imagepath={item.imagepath} price={item.price} currency={item.currency} /> */}
+                <Product_child data={item} />
+              </TouchableOpacity>
 
-          )} />
+            )} />
           <this.refresh_button />
         </View>
         <View>
           <FloatingMenu items={[{ label: "hey", image: require("./menuicon.png") },
-            { label: "there" },
+          { label: "there" },
           ]}
-                        isOpen={this.state.menuOpen} onMenuToggle={() => {
-            if (this.state.menuOpen === true) {
-              this.setState({ menuOpen: false });
-            } else {
-              this.setState({ menuOpen: true });
-            }
+            isOpen={this.state.menuOpen} onMenuToggle={() => {
+              if (this.state.menuOpen === true) {
+                this.setState({ menuOpen: false });
+              } else {
+                this.setState({ menuOpen: true });
+              }
 
-          }}
-                        onItemPress={(item, index) => {
-                          Navigation.push(this.props.componentId, {
-                            component: {
-                              name: "Contact",
-                              options: {
-                                topBar: {
-                                  visible: false,
-                                },
-                                animations: {
-                                  push: {
-                                    content: {
-                                      translationX: {
-                                        from: require("react-native").Dimensions.get("window").width,
-                                        to: 0, duration: 250,
+            }}
+            onItemPress={(item, index) => {
+              Navigation.push(this.props.componentId, {
+                component: {
+                  name: "Contact",
+                  options: {
+                    topBar: {
+                      visible: false,
+                    },
+                    animations: {
+                      push: {
+                        content: {
+                          translationX: {
+                            from: require("react-native").Dimensions.get("window").width,
+                            to: 0, duration: 250,
 
 
-                                      },
-                                    },
-                                  },
-                                  pop: {
-                                    content: {
-                                      translationX: {
-                                        from: 0,
-                                        to: require("react-native").Dimensions.get("window").width,
-                                        duration: 250,
-                                      },
-                                    },
-                                  },
-                                },
-                              },
-                            },
-                          });
-                        }}
+                          },
+                        },
+                      },
+                      pop: {
+                        content: {
+                          translationX: {
+                            from: 0,
+                            to: require("react-native").Dimensions.get("window").width,
+                            duration: 250,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              });
+            }}
           />
         </View>
 

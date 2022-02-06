@@ -1,6 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { Component } from "react";
 import { Alert, FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Navigation, Options,NavigationComponent } from "react-native-navigation";
+import Shop_API from './API/Shop_API';
+import Transition from "./Pages/Transition/Transition";
 
 
 
@@ -19,33 +22,20 @@ class Contact extends Component {
 
   }
 
-  fetchData=(text)=>{
+  fetchData= async (text)=>{
 
-      const url='http://192.168.0.23:8001/lf';
-      const config={method:'POST', headers:{
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          region:text
-        })
-      }
-      fetch(url,config).then((result)=>  result.text()
-      )
-        .then((response)=>{
-          const  responseJson=response.length ? JSON.parse(response) : {};
-            this.setState({ data: responseJson });
+    const location_response= await Shop_API.onLocation_FetchingAPI(text)
 
-        })
-        .catch((error)=>{
-          console.error(error)
-        })
+    this.setState({data : location_response})
+
+
+
   }
 
   push=(country,district, subdistrict, region)=>{
     Navigation.push(this.props.componentId,{
       component:{
-        name:'Settings',
+        name:'Home',
         passProps:{
           country:country,
           district: district,
@@ -53,6 +43,7 @@ class Contact extends Component {
           region: region
         },
         options:{
+
           topBar:{
             visible:false
           }
@@ -61,9 +52,25 @@ class Contact extends Component {
     })
   }
 
+   
+      
+
+
+  save_location_info= async (country,district,subdistrict,region)=>{
+    try {
+      await AsyncStorage.setItem("country",country)
+      await AsyncStorage.setItem("district",district)
+      await AsyncStorage.setItem("subdistrict",subdistrict)
+      await AsyncStorage.setItem("region",region)
+      Transition.Set_Root("Home")
+    } catch (error) {
+      Alert.alert(error)
+    }
+  }
+
   childview=({country,district, subdistrict, region})=>{
     return(
-      <View style={{margin:"1%" ,borderRadius:10, backgroundColor:'gray'}} >
+      <View style={{margin:"1%" ,borderRadius:10, backgroundColor:'white', elevation: 5}} >
         <View>
           <Text style={{color:'red',padding:5}}>{country}</Text>
         </View>
@@ -93,7 +100,8 @@ class Contact extends Component {
 
             style={{margin:10}} data={this.state.data}
             renderItem={({item})=>(
-              <TouchableOpacity  onPress={()=>this.push(item.country,item.district,item.subdistrict,item.region)}>
+              <TouchableOpacity  onPress={()=>this.push(item.country,item.district,item.subdistrict,item.region) +
+              this.save_location_info(item.country,item.district,item.subdistrict,item.region)}>
                 <this.childview country={item.country} district={item.district} subdistrict={item.subdistrict} region={item.region}/>
               </TouchableOpacity>
 
