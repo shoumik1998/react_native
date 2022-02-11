@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { useToast } from "native-base";
 
 import {
   ActivityIndicator,
@@ -17,14 +18,17 @@ import { color } from "native-base/lib/typescript/theme/styled-system";
 import Shop_API from "../API/Shop_API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import  Product_child   from "../Components/Product_card";
-import Transition from "./Transition/Transition";
+import CustomDialog from "../Components/CustomDialog";
+import toast from "../Components/Toast";
+
+
 
 
 class HomePage extends Component {
 
-
-
   constructor(props) {
+
+
     super(props);
     Navigation.events().bindComponent(this);
     this.state = {
@@ -37,10 +41,16 @@ class HomePage extends Component {
       isLoading: true,
       refresh_status: "none",
       menuOpen: false,
-      change_text:""
+      change_text:"",
+      modal_view:false
 
     };
 
+  }
+
+   toas=()=>{
+const toastt=useToast();
+toastt.show({description:"heuuu"})
   }
 
 
@@ -88,6 +98,7 @@ class HomePage extends Component {
 
 
   componentDidMount() {
+    
     this.fetch_all();
   }
 
@@ -165,8 +176,13 @@ class HomePage extends Component {
 
 
   render() {
+
+   
+
+
     return (
       <KeyboardAvoidingView style={{ backgroundColor: "white", flex: 100, justifyContent: "flex-start" }}>
+        
         
         <SafeAreaView style={{
           flex: 10,
@@ -177,6 +193,14 @@ class HomePage extends Component {
           justifyContent: "center",
           alignItems: "flex-end",
         }}>
+
+          
+         <CustomDialog display_status={this.state.modal_view}/>
+            
+            
+          
+          
+          
           <TouchableWithoutFeedback onPress={() => {
             this.textInput.focus() + this.setState({ status_search: "none", status_close: "flex", editable: true });
           }}>
@@ -213,11 +237,13 @@ class HomePage extends Component {
             onEndReached={this.loarmore}
             ListFooterComponent={this.renderFooter}
             style={{ alignSelf: "center" }} numColumns={2} data={this.state.all_data} renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => {
+              <TouchableOpacity
+            
+               onPress={() => {
                   this.go(item.imagepath)
-                  //Transition.Go("Details",item.imagepath,this.props.componentId)
-              }} onLongPress={() => this.modal()}>
-                {/* <this.child description={item.description} name={item.name} imagepath={item.imagepath} price={item.price} currency={item.currency} /> */}
+              }} 
+              onLongPress={() => {CustomDialog(this.state.modal_view)}}
+              >
                 <Product_child data={item} />
               </TouchableOpacity>
 
@@ -225,10 +251,57 @@ class HomePage extends Component {
           <this.refresh_button />
         </View>
         <View>
-          <FloatingMenu items={[{ label: "hey", image: require("./menuicon.png") },
-          { label: "there" },
+          <FloatingMenu
+         
+        
+          borderColor="blue"
+            primaryColor="blue"
+            items={[
+              { label: "Saved" },
+              { label: "Orders" },
+              { label: "Log In" },
+              { label: "Search Shop" },
+              { label: "Search Region" },
+              { label: "History" },
+          
+          
           ]}
-            isOpen={this.state.menuOpen} onMenuToggle={() => {
+          renderItemIcon={
+            (item,index,menuState)=>{
+              if (index===0) {
+                return(
+                  <Image style={{width:"120%",height:"120%"}} source={require("./Assets/history.png")}/>
+                )  
+              }else if (index===1) {
+                return(
+                  <Image style={{width:"100%",height:"100%"}} source={require("./Assets/map.png")}/>
+                )
+              }
+              else if (index===2) {
+                return(
+                  <Image style={{width:"100%",height:"100%"}} source={require("./Assets/search.png")}/>
+                )
+              }
+              else if (index===3) {
+                return(
+                  <Image style={{width:"100%",height:"100%"}} source={require("./Assets/login.png")}/>
+                )
+              }
+              else if (index===4) {
+                return(
+                  <Image style={{width:"100%",height:"100%"}} source={require("./Assets/shopping-cart.png")}/>
+                )
+              }
+              else if (index===5) {
+                return(
+                  <Image style={{width:"100%",height:"100%"}} source={require("./Assets/download.png")}/>
+                )
+              }
+
+            }
+          }
+            isOpen={this.state.menuOpen}
+             onMenuToggle={() => {
               if (this.state.menuOpen === true) {
                 this.setState({ menuOpen: false });
               } else {
@@ -237,37 +310,12 @@ class HomePage extends Component {
 
             }}
             onItemPress={(item, index) => {
-              Navigation.push(this.props.componentId, {
-                component: {
-                  name: "Contact",
-                  options: {
-                    topBar: {
-                      visible: false,
-                    },
-                    animations: {
-                      push: {
-                        content: {
-                          translationX: {
-                            from: require("react-native").Dimensions.get("window").width,
-                            to: 0, duration: 250,
-
-
-                          },
-                        },
-                      },
-                      pop: {
-                        content: {
-                          translationX: {
-                            from: 0,
-                            to: require("react-native").Dimensions.get("window").width,
-                            duration: 250,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              });
+              if (index===0) {
+                Alert.alert(index.toString())
+              }else if(index===1){
+                Alert.alert(index.toString())
+              }
+              
             }}
           />
         </View>

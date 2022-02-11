@@ -10,20 +10,30 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Navigation } from "react-native-navigation"
 import Transition from "../Pages/Transition/Transition";
+import Circle from "./round";
+import { useToast } from "native-base";
 
 
 
 
-const go_ashop=(user_name)=>{
-  Transition.Go("AShop",user_name,"h_screen")
-}
+
 
 
 
 const Product_child = ({data}) => {
-    const { user_name,name, description, price, imagepath, currency }=data
+    const { orderable_status,user_name,name, description, price, imagepath, currency }=data
+    var order_status="none"
+    if (orderable_status===1) {
+      order_status="flex"
+    }else{
+      order_status="none"
+    }
+
+
+    const t=useToast()
+    
+    
     return (
       <View style={{
         shadowRadius: 10,
@@ -36,11 +46,16 @@ const Product_child = ({data}) => {
         height: 200,
       }}>
         <View style={{ margin: 10, alignSelf: "center" }}>
-          <Text style={{ color: "red" }} onPress={() => {go_ashop(user_name)}}>{name}</Text>
+          <Circle style_add={{display : order_status}}/>
+          <Text style={{ color: "red" }}  onPress={() => 
+            // {Transition.Go("AShop",user_name,"h_screen")}
+            t.show({description:"hjii"})
+            // Alert.alert("g")
+            }>{name}</Text>
         </View>
 
         <View style={{ alignSelf: "center" }}>
-          <Image style={{ width: 100, height: 100 }} source={{ uri: imagepath }} />
+          <Image  style={{ width: 100, height: 100 }} source={{ uri: imagepath }} />
         </View>
 
         <View style={{ marginTop: "auto", padding: "5%", alignItems: "center" }}>

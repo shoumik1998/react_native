@@ -21,7 +21,7 @@ Navigation.registerComponent('Search',()=>Search)
 Navigation.registerComponent('Details',()=>Details)
 Navigation.registerComponent('Login',()=>Login)
 Navigation.registerComponent('Registration',()=>Registration)
-Navigation.registerComponent('AShop',()=>AShop,"ashop_id")
+Navigation.registerComponent('AShop',()=>AShop,)
 
 
 
@@ -78,29 +78,7 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
 
 
 
-  if (user_name!==null && password!==null && country ===null && district===null && subdistrict===null && region===null) {
-    Navigation.setRoot({
-      root: {
-
-            stack: {
-              id: "mainscreen",
-              children: [
-                {
-                  component: {
-                    name: "Contact",
-                    options: {
-
-                      topBar: {
-                        visible:false
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-          }
-    });
-  }else if (country !==null && district !==null && subdistrict !==null && region!==null) {
+   if (country !==null && district !==null && subdistrict !==null && region!==null) {
     Navigation.setRoot({
       root:{
         stack:{
@@ -129,7 +107,7 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
           children:[
             {
               component:{
-                name:'Login',
+                name:'Contact',
                 options:{
                   topBar:{
                     visible:false
