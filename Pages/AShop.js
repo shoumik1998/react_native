@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import Product_child from "../Components/Product_card";
 import Shop_API from "../API/Shop_API";
-import Transition from "./Transition/Transition";
+import Transition from "../Transition/Transition";
 import { Navigation } from "react-native-navigation";
 
 

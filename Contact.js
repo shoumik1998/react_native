@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Alert, FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Navigation, Options,NavigationComponent } from "react-native-navigation";
 import Shop_API from './API/Shop_API';
-import Transition from "./Pages/Transition/Transition";
+import Transition from "./Transition/Transition";
 
 
 

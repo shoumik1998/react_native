@@ -3,7 +3,7 @@ import { Button, TextInput, View, Alert, Text } from "react-native";
 import { Navigation } from "react-native-navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Shop_API from "../API/Shop_API";
-import Transition from "./Transition/Transition";
+import Transition from "../Transition/Transition";
 
 class Login extends Component {
 
