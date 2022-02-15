@@ -1,4 +1,6 @@
+import { Alert } from "react-native";
 import Api_Client from "./Api_Client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const onLoginAPI = async (user_name, user_password) => {
     var response = null
@@ -93,5 +95,34 @@ const onFetch_After_Location_SearchAPI=async(region,country,district,subdistrict
     return response;
 }
 
+const onShopName_FetchingAPI= async (shop_name)=>{
+    var response = null
+    try {
+        var country=await AsyncStorage.getItem("country")
+        var district=await AsyncStorage.getItem("district")
+        var subdistrict= await AsyncStorage.getItem("subdistrict")
+        var region=await AsyncStorage.getItem("region")
+        
+        await Api_Client.post('/shop_name_fetching',{
+            shop_name:shop_name,
+            country:country,
+            district:district,
+            subdistrict:subdistrict,
+            region:region
+        })
+        .then((json_response)=>{
+            response=json_response.data
+        })
+        .catch((e)=>{
+            console.log(e)
 
-export default  {onLoginAPI,onLocation_FetchingAPI,onFetch_After_Location_SearchAPI,single_shop_data};
+        })
+    } catch (error) {
+        
+    }
+
+    return response
+}
+
+
+export default  {onLoginAPI,onLocation_FetchingAPI,onFetch_After_Location_SearchAPI,single_shop_data,onShopName_FetchingAPI};

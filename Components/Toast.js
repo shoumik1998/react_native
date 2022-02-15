@@ -1,22 +1,17 @@
 import React from "react";
-import { useToast,Center,Button, NativeBaseProvider } from "native-base";
+import { useToast,Center,Button, NativeBaseProvider,Toast } from "native-base";
 import { Alert } from "react-native";
 
 
-const Example = () => {
-    const toast = useToast();
-    return(
-    <NativeBaseProvider>
-        <Center>
-        <Button onPress={() =>{ toast.show({
-        description :"hey",
-        placement:"top"
-      })}}>
-          Show Toast
-        </Button>
-      </Center>
-    </NativeBaseProvider>
-    )
+const Example = (status) => {
+  
+    if (status===true) {
+      Alert.alert("yes")
+    }else{
+Alert.alert("No")
+    }
+     
+    
     
   }
 

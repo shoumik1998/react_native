@@ -4,6 +4,9 @@ import { Alert, FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } fr
 import { Navigation, Options,NavigationComponent } from "react-native-navigation";
 import Shop_API from './API/Shop_API';
 import Transition from "./Transition/Transition";
+import Location_childview from "./Components/LocationData_childView";
+import ShopData_chiled from "./Components/ShopData_childView";
+
 
 
 
@@ -24,9 +27,17 @@ class Contact extends Component {
 
   fetchData= async (text)=>{
 
-    const location_response= await Shop_API.onLocation_FetchingAPI(text)
-
+    if (this.props.props==="looking_for_shop") {
+      
+      const shop_name_response=await Shop_API.onShopName_FetchingAPI(text)
+      this.setState({data:shop_name_response})
+    }else{
+      
+      const location_response= await Shop_API.onLocation_FetchingAPI(text)
     this.setState({data : location_response})
+    }
+
+    
 
 
 
@@ -68,29 +79,13 @@ class Contact extends Component {
     }
   }
 
-  childview=({country,district, subdistrict, region})=>{
-    return(
-      <View style={{margin:"1%" ,borderRadius:10, backgroundColor:'white', elevation: 5}} >
-        <View>
-          <Text style={{color:'red',padding:5}}>{country}</Text>
-        </View>
-        <View>
-          <Text style={{color:'red',padding:5}}>{district}</Text>
-        </View>
-        <View>
-          <Text style={{color:'red',padding:5}}>{subdistrict}</Text>
-        </View>
-        <View>
-          <Text style={{color:'red',padding:5}}>{region}</Text>
-        </View>
-      </View>
-    )
-  }
+  
 
 
   render() {
     return (
       <View style={{flex:1,justifyContent:'flex-start'}}>
+        
         <View  style={{margin:7 , padding:10}}>
           <TextInput onChangeText={(text)=>{this.fetchData(text)}}  enablesReturnKeyAutomatically={true} focusable={true} autoFocus={true} showSoftInputOnFocus={true}
                       placeholder='search'  style={{width:'100%', height:50,borderWidth:2,borderRadius:5}}/>
@@ -102,7 +97,15 @@ class Contact extends Component {
             renderItem={({item})=>(
               <TouchableOpacity  onPress={()=>this.push(item.country,item.district,item.subdistrict,item.region) +
               this.save_location_info(item.country,item.district,item.subdistrict,item.region)}>
-                <this.childview country={item.country} district={item.district} subdistrict={item.subdistrict} region={item.region}/>
+                {
+                  this.props.props==="looking_for_shop" && 
+                  <ShopData_chiled shop_name={item.name}/>
+                }
+                {
+                  this.props.props===null &&
+                  <Location_childview country={item.country} district={item.district} subdistrict={item.subdistrict} region={item.region}/>
+                }
+                
               </TouchableOpacity>
 
 

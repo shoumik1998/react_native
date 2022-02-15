@@ -10,8 +10,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+
 import Transition from "../Transition/Transition";
-import Circle from "./round";
+import Circle from "./Round";
 import { useToast } from "native-base";
 
 
@@ -46,7 +47,7 @@ const Product_child = ({data}) => {
         height: 200,
       }}>
         <View style={{ margin: 10, alignSelf: "center" }}>
-          <Circle style_add={{display : order_status}}/>
+          <Circle style_add={{display : order_status,width:5,height:5,borderRadius:2}}/>
           <Text style={{ color: "red" }}  onPress={() => 
             // {Transition.Go("AShop",user_name,"h_screen")}
             t.show({description:"hjii"})

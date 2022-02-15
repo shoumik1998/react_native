@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { useToast } from "native-base";
+import { useToast, NativeBaseProvider } from "native-base";
 
 import {
   ActivityIndicator,
@@ -18,8 +18,11 @@ import { color } from "native-base/lib/typescript/theme/styled-system";
 import Shop_API from "../API/Shop_API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import  Product_child   from "../Components/Product_card";
+
 import CustomDialog from '../Components/CustomDialog'
+
 import toast from "../Components/Toast";
+import Example from "../Components/Toast";
 
 
 
@@ -42,7 +45,7 @@ class HomePage extends Component {
       refresh_status: "none",
       menuOpen: false,
       change_text:"",
-      modal_view:false
+      modal_view:0
 
     };
 
@@ -177,13 +180,8 @@ toastt.show({description:"heuuu"})
 
   render() {
 
-   
-
-
     return (
-      <KeyboardAvoidingView style={{ backgroundColor: "white", flex: 100, justifyContent: "flex-start" }}>
-        
-        
+      <NativeBaseProvider>
         <SafeAreaView style={{
           flex: 10,
           elevation: 6,
@@ -194,12 +192,9 @@ toastt.show({description:"heuuu"})
           alignItems: "flex-end",
         }}>
 
-          
-         <CustomDialog display_status={this.state.modal_view}/>
-            
-            
-          
-          
+          {
+            this.state.modal_view>0 && <CustomDialog modal_visible_status={this.state.modal_view} /> 
+          }
           
           <TouchableWithoutFeedback onPress={() => {
             this.textInput.focus() + this.setState({ status_search: "none", status_close: "flex", editable: true });
@@ -241,8 +236,9 @@ toastt.show({description:"heuuu"})
             
                onPress={() => {
                   this.go(item.imagepath)
+                  
               }} 
-              onLongPress={() => {CustomDialog(this.state.modal_view)}}
+              onLongPress={() => {this.setState({modal_view:this.state.modal_view+1}) }}
               >
                 <Product_child data={item} />
               </TouchableOpacity>
@@ -270,31 +266,45 @@ toastt.show({description:"heuuu"})
             (item,index,menuState)=>{
               if (index===0) {
                 return(
+
                   <Image style={{width:"120%",height:"120%"}} source={require("../Assets/history.png")}/>
                 )  
               }else if (index===1) {
                 return(
-                  <Image style={{width:"100%",height:"100%"}} source={require("../Assets/map.png")}/>
+                  <Image style={{ width: "120%", height: "120%" }} source={require("./Assets/map.png")} />
+                )  
+              }else if (index===1) {
+                return(
+                  <Image style={{width:"100%",height:"100%"}} source={require("./Assets/map.png")}/>
+
                 )
               }
               else if (index===2) {
                 return(
-                  <Image style={{width:"100%",height:"100%"}} source={require("../Assets/search.png")}/>
+
+                  <Image style={{ width: "100%", height: "100%" }} source={require("./Assets/search.png")} />
+
                 )
               }
               else if (index===3) {
                 return(
-                  <Image style={{width:"100%",height:"100%"}} source={require("../Assets/login.png")}/>
+
+                 <Image style={{ width: "100%", height: "100%" }} source={require("./Assets/login.png")} />
+
                 )
               }
               else if (index===4) {
                 return(
-                  <Image style={{width:"100%",height:"100%"}} source={require("../Assets/shopping-cart.png")}/>
+
+                  <Image style={{ width: "100%", height: "100%" }} source={require("./Assets/shopping-cart.png")} />
+
                 )
               }
               else if (index===5) {
                 return(
-                  <Image style={{width:"100%",height:"100%"}} source={require("../Assets/download.png")}/>
+
+                  <Image style={{ width: "100%", height: "100%" }} source={require("./Assets/download.png")} />
+
                 )
               }
 
@@ -321,7 +331,8 @@ toastt.show({description:"heuuu"})
         </View>
 
 
-      </KeyboardAvoidingView>
+     
+      </NativeBaseProvider>
     );
   }
 

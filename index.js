@@ -10,6 +10,7 @@ import Login from "./Pages/Login";
 import Registration from "./Pages/Registration";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AShop from "./Pages/AShop";
+import Side_menu from "./Components/Side_menu"
 
 
 Navigation.registerComponent('Home',()=>HomePage,)
@@ -21,7 +22,8 @@ Navigation.registerComponent('Search',()=>Search)
 Navigation.registerComponent('Details',()=>Details)
 Navigation.registerComponent('Login',()=>Login)
 Navigation.registerComponent('Registration',()=>Registration)
-Navigation.registerComponent('AShop',()=>AShop,"ashop_id")
+Navigation.registerComponent('AShop',()=>AShop)
+Navigation.registerComponent('Side_menu',()=>Side_menu)
 
 
 
@@ -50,18 +52,7 @@ Navigation.setDefaultOptions({
 
 
 Navigation.events().registerAppLaunchedListener(async ()=>{
-  // this.state={
-  //   user_name:'',
-  //   password:''
-  // }
-  //
-  //
-  // try {
-  //   this.setState({user_name: await AsyncStorage.getItem("user_name")})
-  //   this.setState({password: await AsyncStorage.getItem("password")})
-  // }catch (e) {
-  //
-  // }
+  
 
 
   try {
@@ -78,10 +69,21 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
 
 
 
+
   if (country !==null && district !==null && subdistrict !==null && region!==null) {
+
+   if (country !==null && district !==null && subdistrict !==null && region!==null) {
+
     Navigation.setRoot({
       root:{
-        stack:{
+        sideMenu:{
+          left:{
+            component:{
+              name:"Side_menu"
+            }
+          },
+          center:{
+            stack:{
           id:'home_screen',
           children:[
             {
@@ -97,8 +99,13 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
             }
           ]
         }
+          }
+
+        }
+        
       }
     })
+  }
 
   }else {
     Navigation.setRoot({
@@ -120,7 +127,6 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
       }
     })
   }
-
 
 })
 

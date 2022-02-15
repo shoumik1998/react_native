@@ -1,17 +1,22 @@
-import React,{useState} from "react";
+import React, {useState,useEffect} from "react";
 
 import { Text,Modal,Button,FormControl, Center,Input,NativeBaseProvider } from "native-base";
 import { Alert } from "react-native";
 
 
-const CustomDialog=({display_status})=>{
-    const  [showModal,setShowModal]=useState(display_status)
+const CustomDialog=({modal_visible_status})=>{
+    const  [showModal,setShowModal]=useState(modal_visible_status)
+    useEffect(()=>{setShowModal(modal_visible_status)},[modal_visible_status])
+   
     
     
     return(
         <NativeBaseProvider>
         <Center>
-        <Modal isOpen={showModal!=0} onClose={() =>setShowModal(0)}>
+          {/* {
+            showModal>0 && Alert.alert(showModal.toString()+" l "," ",[{text:"cancel" , onPress: ()=>{setShowModal(0)}}])
+          } */}
+        <Modal isOpen={showModal} onClose={() =>setShowModal(0)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />
           <Modal.Header>Contact Us</Modal.Header>
@@ -28,12 +33,12 @@ const CustomDialog=({display_status})=>{
           <Modal.Footer>
             <Button.Group space={2}>
               <Button variant="ghost" colorScheme="blueGray" onPress={() => {
-              setShowModal(false);
+              setShowModal(0);
             }}>
                 Cancel
               </Button>
               <Button onPress={() => {
-             setShowModal(false);
+             setShowModal(0);
             }}>
                 Save
               </Button>
