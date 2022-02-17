@@ -20,27 +20,39 @@ const  Go=(component_name, props,component_id)=>{
     })
 }
 
-const Set_Root=(component_name)=>{
-    Navigation.setRoot(
-        {
-            root:{
-                stack:{
-                    children:[
-                        {
-                            component:{
-                                name:component_name,
-                                options:{
-                                    topBar:{
-                                        visible:false
+const Set_Root=(component_name,props)=>{
+    Navigation.setRoot({
+        root: {
+            sideMenu: {
+                left: {
+                    component: {
+                        name: "Side_menu"
+                    }
+                },
+                center: {
+                    stack: {
+                        id: 'home_screen',
+                        children: [
+                            {
+                                component: {
+                                    name: component_name,
+                                    id: "h_screen",
+                                    passProps:props,
+                                    options: {
+                                        topBar: {
+                                            visible: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    ]
+                        ]
+                    }
                 }
+
             }
+
         }
-    )
+    })
 }
 
 export default {Go,Set_Root};

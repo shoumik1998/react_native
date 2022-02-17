@@ -49,9 +49,9 @@ const Product_child = ({data}) => {
         <View style={{ margin: 10, alignSelf: "center" }}>
           <Circle style_add={{display : order_status,width:5,height:5,borderRadius:2}}/>
           <Text style={{ color: "red" }}  onPress={() => 
-            // {Transition.Go("AShop",user_name,"h_screen")}
-            t.show({description:"hjii"})
-            // Alert.alert("g")
+             {Transition.Go("AShop",user_name,"h_screen")}
+            
+            
             }>{name}</Text>
         </View>
 

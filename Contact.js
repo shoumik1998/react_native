@@ -93,23 +93,45 @@ class Contact extends Component {
         <View>
           <FlatList
 
-            style={{margin:10}} data={this.state.data}
-            renderItem={({item})=>(
-              <TouchableOpacity  onPress={()=>this.push(item.country,item.district,item.subdistrict,item.region) +
-              this.save_location_info(item.country,item.district,item.subdistrict,item.region)}>
-                {
-                  this.props.props==="looking_for_shop" && 
-                  <ShopData_chiled shop_name={item.name}/>
+            style={{ margin: 10 }} data={this.state.data}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => {
+                if (this.props.props==="looking_for_shop") {
+                       Transition.Go("AShop",item.user_name,"home_screen")
+                      
+
+                } else {
+                  Transition.Set_Root("Home",
+                    {
+                      country: item.country,
+                      district: item.district,
+                      subdistrict: item.subdistrict,
+                      region: item.region
+                    }
+                  ) +
+                    this.save_location_info(item.country, item.district, item.subdistrict, item.region)
                 }
+
+
+              }}>
                 {
-                  this.props.props===null &&
-                  <Location_childview country={item.country} district={item.district} subdistrict={item.subdistrict} region={item.region}/>
+
+                  this.props.props === "looking_for_shop" ?
+                    <ShopData_chiled shop_name={item.name} /> :
+                    <Location_childview country={item.country} district={item.district} subdistrict={item.subdistrict} region={item.region} />
                 }
-                
+
+
+
+
+
+
+
+
               </TouchableOpacity>
 
 
-            )}/>
+            )} />
         </View>
       </View>
     );

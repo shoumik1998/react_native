@@ -31,6 +31,7 @@ const onLoginAPI = async (user_name, user_password) => {
 const onLocation_FetchingAPI= async (region)=>{
     var response = null
     try {
+        
         await Api_Client.post('/lf',{
             "region":region
         })

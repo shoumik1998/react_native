@@ -115,6 +115,7 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
             {
               component:{
                 name:'Contact',
+                id:"contact_id",
                 options:{
                   topBar:{
                     visible:false

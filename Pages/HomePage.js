@@ -101,30 +101,31 @@ toastt.show({description:"heuuu"})
 
 
   componentDidMount() {
-    
+
     this.fetch_all();
   }
 
 
-   async fetch_all(product_name) {
-     
-    try {
-      var country = await AsyncStorage.getItem("country")
-      var district = await AsyncStorage.getItem("district")
-      var subdistrict = await AsyncStorage.getItem("subdistrict")
-      var region = await AsyncStorage.getItem("region")
-    } catch (error) {
+  async fetch_all(product_name) {
+    
+        try {
+          var country = await AsyncStorage.getItem("country")
+          var district = await AsyncStorage.getItem("district")
+          var subdistrict = await AsyncStorage.getItem("subdistrict")
+          var region = await AsyncStorage.getItem("region")
+        } catch (error) {
 
-    }
+        }
 
-    const response_fetch_all = await Shop_API.onFetch_After_Location_SearchAPI(region,
-      country, district, subdistrict, product_name)
+        const response_fetch_all = await Shop_API.onFetch_After_Location_SearchAPI(region,
+          country, district, subdistrict, product_name)
 
-    this.setState({ all_data: this.state.all_data.concat(response_fetch_all) })
-
-
+        this.setState({ all_data: this.state.all_data.concat(response_fetch_all) })
+       
+      
     
   };
+  
 
   
 
@@ -207,7 +208,7 @@ toastt.show({description:"heuuu"})
               Alert.alert("kuyg");
             }}>
                <TextInput onChange={async()=>{}} editable={this.state.editable} ref={input => this.textInput = input} 
-              onChangeText={async(text)=> {this.fetch_all }} placeholder="search" style={{ width: "80%", height: "100%" }} /> 
+              onChangeText={(text)=>this.fetch_all(text)} placeholder="search" style={{ width: "80%", height: "100%" }} /> 
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => {
@@ -235,7 +236,7 @@ toastt.show({description:"heuuu"})
               <TouchableOpacity
             
                onPress={() => {
-                  this.go(item.imagepath)
+                 this.fetch_all()
                   
               }} 
               onLongPress={() => {this.setState({modal_view:this.state.modal_view+1}) }}
