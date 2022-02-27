@@ -56,7 +56,7 @@ const Product_child = ({data}) => {
         </View>
 
         <View style={{ alignSelf: "center" }}>
-          <Image  style={{ width: 100, height: 100 }} source={{ uri: imagepath }} />
+          <Image  style={{ width: 100, height: 100 }} resizeMode={'contain'} source={{ uri: imagepath }} />
         </View>
 
         <View style={{ marginTop: "auto", padding: "5%", alignItems: "center" }}>

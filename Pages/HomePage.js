@@ -23,6 +23,7 @@ import CustomDialog from '../Components/CustomDialog'
 
 import toast from "../Components/Toast";
 import Example from "../Components/Toast";
+import Transition from "../Transition/Transition";
 
 
 
@@ -236,7 +237,7 @@ toastt.show({description:"heuuu"})
               <TouchableOpacity
             
                onPress={() => {
-                 this.fetch_all()
+                 Transition.Go("Details",item,"h_screen")
                   
               }} 
               onLongPress={() => {this.setState({modal_view:this.state.modal_view+1}) }}

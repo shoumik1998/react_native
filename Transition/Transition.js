@@ -4,6 +4,7 @@ import { Navigation } from "react-native-navigation"
 
 
 const  Go=(component_name, props,component_id)=>{
+
     Navigation.push(component_id,{
         component:{
             name:component_name,
