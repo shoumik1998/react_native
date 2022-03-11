@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Center, NativeBaseProvider } from "native-base";
 import { View ,Text,Image,StyleSheet,Alert, TouchableOpacity} from "react-native";
 import Circle from "./Round";
 import Transition from "../Transition/Transition";
 import { Navigation } from "react-native-navigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const gooo=(component_name,props)=>{
     Navigation.push("h_screen",{
@@ -26,11 +27,23 @@ const gooo=(component_name,props)=>{
     })
 }
 
-const Side_menu_page=()=>{
+
+const Side_menu_page = () => {
+    const [login, setLogin] = useState("a")
+    useEffect(async() => {
+       
+        if (await AsyncStorage.getItem("phn_gmail")!==null) {
+            setLogin(await AsyncStorage.getItem("phn_gmail"))
+        }
+            
+        
+
+
+    }, [])
     return(
         
                 <View style={{flex:10,marginRight:"10%"}}>
-                    <View style={{flex:3,backgroundColor:"white",justifyContent:'center',alignItems:'center',borderBottomWidth:1}}>
+                    <View style={{flex:3,backgroundColor:"white",justifyContent:'center',alignItems:'center'}}>
                         <Circle style_add={{width:80,height:80,borderRadius:50}}/>
                         
 
@@ -49,10 +62,10 @@ const Side_menu_page=()=>{
                         </View> 
                         </TouchableOpacity>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>gooo("Saved",null)}>
                            <View style={styles.view_styles}>
                             <Image style={styles.image_styles} source={require("../Assets/download.png")} />
-                            <Text onPress={()=>{gooo("Contact")}} style={styles.text_styles} >Saved</Text>
+                            <Text  style={styles.text_styles} >Saved</Text>
                         </View> 
                         </TouchableOpacity>
                         
@@ -62,7 +75,7 @@ const Side_menu_page=()=>{
                             <Text style={styles.text_styles} >Orders</Text>
                         </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>gooo("Login")} >
                             <View style={styles.view_styles}>
                             <Image style={styles.image_styles} source={require("../Assets/history.png")} />
                             <Text style={styles.text_styles} >History</Text>
@@ -71,10 +84,28 @@ const Side_menu_page=()=>{
                         
                         
                         
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={async()=>{
+                            var log_status=await AsyncStorage.getItem("phn_gmail")
+                            if (log_status==="a") {
+                                gooo("Login")
+                                
+                            }else{
+                                
+                                await AsyncStorage.setItem("phn_gmail","a")
+                                setLogin("a")
+                                
+                            }
+                        }}>
                            <View style={styles.view_styles}>
-                            <Image style={styles.image_styles} source={require("../Assets/login.png")} />
-                            <Text style={styles.text_styles} >LogIn</Text>
+                            
+                            {
+                                  login!=="a" ?
+                                [   <Image style={styles.image_styles} source={require("../Assets/logout.png")} /> ,
+                                 <Text style={styles.text_styles} >LogOut</Text> ]
+                                 :[<Image style={styles.image_styles} source={require("../Assets/login.png")} /> ,
+                                  <Text style={styles.text_styles} >LogIn</Text>]
+                            }
+                            
                         </View> 
                         </TouchableOpacity>
                         

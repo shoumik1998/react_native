@@ -14,7 +14,7 @@ class Registration extends Component {
         <View style={{alignSelf:"center",width:"100%",height:"10%",margin:"5%"}}>
           <TextInput placeholder="Password...." style={{elevation:2,borderRadius:10,width:"85%",height:"90%",margin:10,alignSelf:"center",backgroundColor:"white"}}/>
         </View>
-        <View style={{elevation:2,borderRadius:20,backgroundColor:"#1e90ff",alignSelf:"center",width:"50%",height:"8%",margin:"5%",alignItems:"center",justifyContent:"center"}}>
+        <View style={{elevation:2,borderRadius:12,backgroundColor:"#1e90ff",alignSelf:"center",width:"50%",height:"8%",margin:"5%",alignItems:"center",justifyContent:"center"}}>
           <Text onPress={()=>{Alert.alert('hmmm')}} style={{fontSize:23,color:"white"}}>REGISTER</Text>
         </View>
       </View>

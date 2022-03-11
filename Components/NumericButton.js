@@ -1,11 +1,18 @@
-import { Circle,Button ,HStack,NativeBaseProvider} from "native-base";
 import React ,{useState} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Circle,Button ,HStack,NativeBaseProvider} from "native-base";
 import { View ,StyleSheet,Dimensions,  TouchableOpacity, Image,Text,Alert} from "react-native";
+import OrderInfoDialog from "./OrderInfoDialog";
+import LogCheckerDialog from "./LogCheckerDialog";
+
+
 
 
 const NumericButton=()=>{
     
    const [number,setNumber]=useState(0)
+   const [log_number,setLog_Number]=useState(0)
+   const [orderDialogStatus,setOrderDialogSatus]=useState(0)
    if (number<0) {
        setNumber(0)
    }
@@ -44,12 +51,38 @@ const NumericButton=()=>{
                 </TouchableOpacity>
             </View>
             <View>
-              <Button onPress={()=>{Alert.alert('hm')}}>ORDER</Button>
+                {
+                    orderDialogStatus>0 && <OrderInfoDialog modal_visible_status={orderDialogStatus} /> ||
+                    log_number>0 && <LogCheckerDialog modal_visible_status={log_number}/>
+                }
+                
+                    
+                
+                
+              <Button onPress={async()=>{
+                  const log_status=await AsyncStorage.getItem("phn_gmail")
+                  if (log_status==="a" || log_status==null) {
+                      setLog_Number(log_number+1)
+                      //Alert.alert(log_number.toString())
+                      
+                  }else{
+                      setOrderDialogSatus(orderDialogStatus+1)
+                    //   Alert.alert(orderDialogStatus.toString())
+                      
+                      
+                  }
+
+              }}>ORDER</Button>
             </View>
         </View>
         
     )
 }
+
+
+
+
+
 
 const styless=StyleSheet.create({
     root_view:{

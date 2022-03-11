@@ -46,7 +46,8 @@ class HomePage extends Component {
       refresh_status: "none",
       menuOpen: false,
       change_text:"",
-      modal_view:0
+      modal_view:0,
+      selected_data:{}
 
     };
 
@@ -195,7 +196,7 @@ toastt.show({description:"heuuu"})
         }}>
 
           {
-            this.state.modal_view>0 && <CustomDialog modal_visible_status={this.state.modal_view} /> 
+            this.state.modal_view>0 && <CustomDialog modal_visible_status={this.state.modal_view} data={this.state.selected_data} /> 
           }
           
           <TouchableWithoutFeedback onPress={() => {
@@ -240,7 +241,10 @@ toastt.show({description:"heuuu"})
                  Transition.Go("Details",item,"h_screen")
                   
               }} 
-              onLongPress={() => {this.setState({modal_view:this.state.modal_view+1}) }}
+              onLongPress={() => {
+                this.setState({selected_data:item})
+                this.setState({modal_view:this.state.modal_view+1})
+               }}
               >
                 <Product_child data={item} />
               </TouchableOpacity>

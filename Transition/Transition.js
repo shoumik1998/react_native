@@ -56,4 +56,8 @@ const Set_Root=(component_name,props)=>{
     })
 }
 
-export default {Go,Set_Root};
+const Pop=(component_name)=>{
+    Navigation.popToRoot("h_screen")
+}
+
+export default {Go,Set_Root,Pop};

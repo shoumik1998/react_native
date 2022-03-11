@@ -10,6 +10,7 @@ import NumericButton from "../Components/NumericButton";
 
 const Details = (props) => {
   
+  
 
   const screen_dimension = Dimensions.get('window')
   const ratio = screen_dimension.width / 541
@@ -89,14 +90,7 @@ const Details = (props) => {
   )
 }
 
-const Product_info_dialog = ({ modal_visibility_status }) => {
-  const [showModal, setShowModal] = useState(modal_visibility_status)
-  return (
-    <NativeBaseProvider>
-      
-    </NativeBaseProvider>
-  )
-}
+
 
 const styless = StyleSheet.create({
   main_view: {

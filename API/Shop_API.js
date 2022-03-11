@@ -6,9 +6,9 @@ const onLoginAPI = async (user_name, user_password) => {
     var response = null
 
     try {
-        await Api_Client.post('/login', {
-            user_name: user_name,
-            user_password: user_password
+        await Api_Client.post('/user_login', {
+            phn_gmail: user_name,
+            password: user_password
         })
             .then((json_response) => {
                 response = json_response.data
