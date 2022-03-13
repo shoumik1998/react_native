@@ -47,7 +47,7 @@ class HomePage extends Component {
       menuOpen: false,
       change_text:"",
       modal_view:0,
-      selected_data:{}
+     selected_data:{}
 
     };
 
