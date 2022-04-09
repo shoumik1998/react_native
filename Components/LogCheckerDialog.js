@@ -6,7 +6,7 @@ import Transition from "../Transition/Transition";
 import { Navigation } from "react-native-navigation";
 
 
-const LogCheckerDialog=({modal_visible_status,props})=>{
+const LogCheckerDialog=({modal_visible_status})=>{
     const  [showModal,setShowModal]=useState(modal_visible_status)
     useEffect(()=>{setShowModal(modal_visible_status)},[modal_visible_status])
    

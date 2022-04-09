@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Alert, Text, TextInput, View } from "react-native";
+import Shop_API from "../API/Shop_API";
 
 class Registration extends Component {
   render() {

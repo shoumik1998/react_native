@@ -36,11 +36,6 @@ class Contact extends Component {
       const location_response= await Shop_API.onLocation_FetchingAPI(text)
     this.setState({data : location_response})
     }
-
-    
-
-
-
   }
 
   push=(country,district, subdistrict, region)=>{

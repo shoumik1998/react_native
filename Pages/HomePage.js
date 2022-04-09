@@ -13,7 +13,6 @@ import {
   View,
 } from "react-native";
 import { Navigation } from "react-native-navigation";
-import { FloatingMenu } from "react-native-floating-action-menu";
 import { color } from "native-base/lib/typescript/theme/styled-system";
 import Shop_API from "../API/Shop_API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -45,7 +44,7 @@ class HomePage extends Component {
       isLoading: true,
       refresh_status: "none",
       menuOpen: false,
-      change_text:"",
+      search_keyword:'',
       modal_view:0,
      selected_data:{}
 
@@ -77,7 +76,7 @@ toastt.show({description:"heuuu"})
         justifyContent: "center",
       }} onPress={() => {
         this.setState({ all_data: [], refresh_status: "none" });
-        this.fetch_all();
+        this.fetch_all(this.state.search_keyword);
       }
       }>
         <View>
@@ -91,14 +90,16 @@ toastt.show({description:"heuuu"})
   };
 
   loarmore = () => {
+
     if (Object.keys(this.state.all_data).length > 20) {
 
       this.setState({ refresh_status: "flex" });
     } else {
-      this.setState({ isLoading: true, currentPage: this.state.currentPage + 1 }, this.fetch_all);
+      this.setState({ isLoading: true, currentPage: this.state.currentPage + 1 }, () => {
+        this.fetch_all(this.state.search_keyword)
+      }
+      );
     }
-
-
   };
 
 
@@ -156,7 +157,7 @@ toastt.show({description:"heuuu"})
     return (
       this.state.isLoading ?
         <View style={{ elevation: 6, alignItems: "center", margin: 10 }}>
-          <ActivityIndicator color="red" size="large" />
+          <ActivityIndicator animating={true} color="green" size="large" />
         </View> : null
     );
   };
@@ -201,16 +202,28 @@ toastt.show({description:"heuuu"})
           
           <TouchableWithoutFeedback onPress={() => {
             this.textInput.focus() + this.setState({ status_search: "none", status_close: "flex", editable: true });
+          
           }}>
             <Image style={{ margin: "2%", width: "8%", height: "50%", display: this.state.status_search }}
               source={require("../Pages/searchicon.png")} />
           </TouchableWithoutFeedback>
           <View style={{ flexDirection: "row", display: this.state.status_close, justifyContent: "center" }}>
             <TouchableWithoutFeedback onPress={() => {
-              Alert.alert("kuyg");
+             
             }}>
                <TextInput onChange={async()=>{}} editable={this.state.editable} ref={input => this.textInput = input} 
-              onChangeText={(text)=>this.fetch_all(text)} placeholder="search" style={{ width: "80%", height: "100%" }} /> 
+              onChangeText={(text)=> {
+                this.setState({all_data:[]})
+                 this.fetch_all(text) 
+                  this.setState({search_keyword:text},()=>{
+                    this.loarmore.bind(this)
+                  }                   
+                  )
+
+                
+              }
+            } 
+              placeholder="search" style={{ width: "80%", height: "100%" }} /> 
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => {
@@ -234,7 +247,8 @@ toastt.show({description:"heuuu"})
             onEndReachedThreshold={0.3}
             onEndReached={this.loarmore}
             ListFooterComponent={this.renderFooter}
-            style={{ alignSelf: "center" }} numColumns={2} data={this.state.all_data} renderItem={({ item }) => (
+            style={{ alignSelf: "center" }} numColumns={2} data={this.state.all_data} 
+            renderItem={({ item }) => (
               <TouchableOpacity
             
                onPress={() => {
@@ -253,7 +267,7 @@ toastt.show({description:"heuuu"})
           <this.refresh_button />
         </View>
         <View>
-          <FloatingMenu
+          {/* <FloatingMenu
          
         
           borderColor="blue"
@@ -333,7 +347,7 @@ toastt.show({description:"heuuu"})
               }
               
             }}
-          />
+          /> */}
         </View>
 
 

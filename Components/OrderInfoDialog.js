@@ -4,9 +4,14 @@ import { Text,Modal,Button,FormControl, Center,Input,NativeBaseProvider,VStack,H
 import { Alert } from "react-native";
 
 
-const OrderInfoDialog=({modal_visible_status})=>{
+const OrderInfoDialog=({setNamep,setPhonep,setAddressp,setOrderp,modal_visible_status})=>{
     const  [showModal,setShowModal]=useState(modal_visible_status)
+    const [name,setName]=useState()
+    const [phone,setPhone]=useState()
+    const [address,setAddress]=useState()
+    const [order,setOrder]=useState(0)
     useEffect(()=>{setShowModal(modal_visible_status)},[modal_visible_status])
+    useEffect(()=>{setOrderp(order)},[order])
    
     
     
@@ -23,22 +28,30 @@ const OrderInfoDialog=({modal_visible_status})=>{
           <Modal.Body>
             <FormControl>
               <FormControl.Label>Name</FormControl.Label>
-              <Input />
+              <Input onChangeText={(text)=>setNamep(text)} />
             </FormControl>
             <FormControl mt="3">
               <FormControl.Label>Phone</FormControl.Label>
-              <Input />
+              <Input keyboardType="numeric" onChangeText={(text)=>setPhonep(text)} />
             </FormControl>
             <FormControl mt="3">
               <FormControl.Label>Address</FormControl.Label>
-              <Input />
+              <Input onChangeText={(text)=>setAddressp(text)} />
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
             
               
-              <Button flex="1" onPress={() => {
+              <Button flex="1" onPress={async() => {
+                setName(name)
+                setPhone(phone)
+                setAddress(address)
+                setOrder(order+1)
+               
               setShowModal(false);
+             
+                   
+                  
             }}>
                 ORDER
               </Button>

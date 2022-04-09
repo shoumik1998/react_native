@@ -6,7 +6,7 @@ class Search extends Component {
     return (
       <View style={{justifyContent:'center'}}>
         <TextInput placeholder='search' style={{width:'100%',height:80}}/>
-        {/*<Text style={{width:20, height:20}}>title</Text>*/}
+       
 
 
       </View>

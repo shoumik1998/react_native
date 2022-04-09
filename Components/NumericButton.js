@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React ,{useState,useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Circle,Button ,HStack,NativeBaseProvider} from "native-base";
 import { View ,StyleSheet,Dimensions,  TouchableOpacity, Image,Text,Alert} from "react-native";
@@ -8,13 +8,22 @@ import LogCheckerDialog from "./LogCheckerDialog";
 
 
 
-const NumericButton=()=>{
+
+const NumericButton=(props)=>{
     
-   const [number,setNumber]=useState(0)
+   const [number,setNumber]=useState(1)
+   const [name,setName]=useState()
+   const [phone,setPhone]=useState()
+   const [address,setAddress]=useState()
    const [log_number,setLog_Number]=useState(0)
    const [orderDialogStatus,setOrderDialogSatus]=useState(0)
-   if (number<0) {
-       setNumber(0)
+   const [order,setOrder]=useState()
+   useEffect(()=>{ props.setNumber(number)},[number])
+useEffect(()=>{props.setName(name) + props.setAddress(address) + props.setPhone(phone)},[name,phone,address])
+useEffect(()=>{props.setOrder(order)},[order])
+
+   if (number<1) {
+       setNumber(1)
    }
     return(
         <View style={styless.root_view}>
@@ -41,7 +50,11 @@ const NumericButton=()=>{
                     <View>
                     <HStack>
                          <Circle size={10} bg="primary.400">
-                             <TouchableOpacity onPress={()=>setNumber(number+1)} style={{width:"100%",height:"100%",justifyContent:'center'}}>
+                             <TouchableOpacity onPress={()=>{
+                                setNumber(number+1)
+                                
+                            }
+                                } style={{width:"100%",height:"100%",justifyContent:'center'}}>
                                  <Image style={{width:"50%",height:"50%",tintColor:"white",alignSelf:'center'}} source={require('../Assets/plus90.png')}/>
                              </TouchableOpacity>
                             
@@ -52,8 +65,10 @@ const NumericButton=()=>{
             </View>
             <View>
                 {
-                    orderDialogStatus>0 && <OrderInfoDialog modal_visible_status={orderDialogStatus} /> ||
-                    log_number>0 && <LogCheckerDialog modal_visible_status={log_number}/>
+                    orderDialogStatus>0 && <OrderInfoDialog
+                     setNamep={setName} setPhonep={setPhone} setAddressp={setAddress} setOrderp={setOrder}
+                     modal_visible_status={orderDialogStatus} /> ||
+                    log_number>0 && <LogCheckerDialog  modal_visible_status={log_number}/>
                 }
                 
                     
@@ -63,10 +78,12 @@ const NumericButton=()=>{
                   const log_status=await AsyncStorage.getItem("phn_gmail")
                   if (log_status==="a" || log_status==null) {
                       setLog_Number(log_number+1)
+                      
                       //Alert.alert(log_number.toString())
                       
                   }else{
                       setOrderDialogSatus(orderDialogStatus+1)
+                      
                     //   Alert.alert(orderDialogStatus.toString())
                       
                       

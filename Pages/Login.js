@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, TextInput, View, Alert, Text, TouchableOpacity } from "react-native";
-import { Navigation } from "react-native-navigation";
+import { Navigation,options } from "react-native-navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Shop_API from "../API/Shop_API";
 import Transition from "../Transition/Transition";
@@ -23,13 +23,15 @@ class Login extends Component {
 
   
 
+  
+
 
 
   login = async () => {
     const response = await Shop_API.onLoginAPI(this.state.phn_gmail, this.state.password)
 
     this.setState({ response: response })
-    console.log(this.state.response)
+    
 
 
     Object.entries(this.state.response).map(async ([k, v]) => {

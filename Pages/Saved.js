@@ -36,10 +36,6 @@ class Saved extends Component {
         this.setState({refresh:!this.state.refresh})
         
       }
-
-
-
-
     })
 
   }

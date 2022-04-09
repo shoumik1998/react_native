@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import AShop from "./Pages/AShop";
 import Side_menu from "./Components/Side_menu"
 import Saved from "./Pages/Saved"
+import OrderedProducts from './Pages/MyOrderedProduct'
 
 
 Navigation.registerComponent('Home',()=>HomePage,)
@@ -26,6 +27,7 @@ Navigation.registerComponent('Registration',()=>Registration)
 Navigation.registerComponent('AShop',()=>AShop)
 Navigation.registerComponent('Side_menu',()=>Side_menu)
 Navigation.registerComponent('Saved',()=>Saved)
+Navigation.registerComponent('OrderedProducts',()=>OrderedProducts)
 
 
 
@@ -74,8 +76,6 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
 
   if (country !==null && district !==null && subdistrict !==null && region!==null) {
 
-   if (country !==null && district !==null && subdistrict !==null && region!==null) {
-
     Navigation.setRoot({
       root:{
         sideMenu:{
@@ -107,7 +107,7 @@ Navigation.events().registerAppLaunchedListener(async ()=>{
         
       }
     })
-  }
+  
 
   }else {
     Navigation.setRoot({

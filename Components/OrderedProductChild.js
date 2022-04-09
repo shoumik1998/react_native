@@ -22,34 +22,9 @@ import { useToast } from "native-base";
 
 
 
-const Product_child = ({data,selected_id}) => {
-    const { orderable_status,user_name,name, description, price, imagepath, currency }=data
-    var order_status="none"
-    var color="white"
-    
-    
-    if (orderable_status===1) {
-      order_status="flex"
-    }else{
-      order_status="none"
-    }
-
-    const isSelected=(data.id===selected_id);
-
-    const bg_color= isSelected ? "red" : "white"
-
-    // for(let valu of selected_ids){
-    //   console.log(valu)
-    // }
-    // console.log(selected_id)
-    // console.log("mm")
-    //Alert.alert(selected_id.toString())
-
-    
-
-
-    
-    
+const OrderedProductChild = ({data,selected_id}) => {
+    const {user_name,id, description,  price, imagepath, currency }=data
+     
     
     return (
       <View style={{
@@ -63,12 +38,8 @@ const Product_child = ({data,selected_id}) => {
         height: 200,
       }}>
         <View style={{ margin: 10, alignSelf: "center" }}>
-          <Circle style_add={{display : order_status,width:5,height:5,borderRadius:2}}/>
-          <Text style={{ color: "red" }}  onPress={() => 
-             {Transition.Go("AShop",user_name,"h_screen")}
-            
-            
-            }>{name}</Text>
+          
+          
         </View>
 
         <View style={{ alignSelf: "center" }}>
@@ -89,4 +60,4 @@ const Product_child = ({data,selected_id}) => {
     );
   };
 
-  export default Product_child;
+  export default OrderedProductChild;
