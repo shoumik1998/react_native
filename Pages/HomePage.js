@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  TouchableWithFeedback,
   View,
 } from "react-native";
 import { Navigation } from "react-native-navigation";
@@ -23,6 +24,7 @@ import CustomDialog from '../Components/CustomDialog'
 import toast from "../Components/Toast";
 import Example from "../Components/Toast";
 import Transition from "../Transition/Transition";
+import { FloatingMenu } from "react-native-floating-action-menu";
 
 
 
@@ -124,6 +126,7 @@ toastt.show({description:"heuuu"})
           country, district, subdistrict, product_name)
 
         this.setState({ all_data: this.state.all_data.concat(response_fetch_all) })
+        console.log(response_fetch_all)
        
       
     
@@ -186,15 +189,33 @@ toastt.show({description:"heuuu"})
 
     return (
       <NativeBaseProvider>
-        <SafeAreaView style={{
+        <View style={{flexDirection:'row',flex: 10,
+          
+          
+          }}>
+          <TouchableOpacity onPress={()=>{
+            Navigation.mergeOptions(this.props.componentId, {
+              sideMenu: {
+                left: {
+                  visible: true,
+                },
+              },
+            });
+
+          }} style={{flex:2,width:'100%',height:"80%",margin:"2%",marginBottom:"20%"}}>
+            <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={require("../Assets/menu_512.png")}/>
+          </TouchableOpacity>
+
+<SafeAreaView style={{
           flex: 10,
           elevation: 6,
           backgroundColor: "white",
           margin: "2%",
           borderRadius: 10,
+          marginStart:"0%",
           justifyContent: "center",
           alignItems: "flex-end",
-        }}>
+         }}>
 
           {
             this.state.modal_view>0 && <CustomDialog modal_visible_status={this.state.modal_view} data={this.state.selected_data} /> 
@@ -204,14 +225,15 @@ toastt.show({description:"heuuu"})
             this.textInput.focus() + this.setState({ status_search: "none", status_close: "flex", editable: true });
           
           }}>
-            <Image style={{ margin: "2%", width: "8%", height: "50%", display: this.state.status_search }}
+            <Image style={{ margin: "2%", width: "12%", height: "50%", display: this.state.status_search }}
               source={require("../Pages/searchicon.png")} />
           </TouchableWithoutFeedback>
           <View style={{ flexDirection: "row", display: this.state.status_close, justifyContent: "center" }}>
             <TouchableWithoutFeedback onPress={() => {
+              this.textInput.focus() 
              
             }}>
-               <TextInput onChange={async()=>{}} editable={this.state.editable} ref={input => this.textInput = input} 
+               <TextInput onChange={async()=>{}} editable={true} ref={input => this.textInput = input} 
               onChangeText={(text)=> {
                 this.setState({all_data:[]})
                  this.fetch_all(text) 
@@ -223,7 +245,7 @@ toastt.show({description:"heuuu"})
                 
               }
             } 
-              placeholder="search" style={{ width: "80%", height: "100%" }} /> 
+              placeholder="search..." style={{ width: "80%", height: "100%" }} /> 
             </TouchableWithoutFeedback>
 
             <TouchableWithoutFeedback onPress={() => {
@@ -238,6 +260,8 @@ toastt.show({description:"heuuu"})
             </TouchableWithoutFeedback>
           </View>
         </SafeAreaView>
+        </View>
+        
 
         <View style={{ flex: 90 }}>
           <FlatList
@@ -253,6 +277,7 @@ toastt.show({description:"heuuu"})
             
                onPress={() => {
                  Transition.Go("Details",item,"h_screen")
+                 
                   
               }} 
               onLongPress={() => {
@@ -268,8 +293,6 @@ toastt.show({description:"heuuu"})
         </View>
         <View>
           {/* <FloatingMenu
-         
-        
           borderColor="blue"
             primaryColor="blue"
             items={[

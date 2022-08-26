@@ -59,8 +59,8 @@ const Product_child = ({data,selected_id}) => {
         borderRadius: 5,
         backgroundColor: selected_id ? "gray" : "white",
         shadowOpacity: 2,
-        width: 160,
-        height: 200,
+        width: 190,
+        height: 230,
       }}>
         <View style={{ margin: 10, alignSelf: "center" }}>
           <Circle style_add={{display : order_status,width:5,height:5,borderRadius:2}}/>

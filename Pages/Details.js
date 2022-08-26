@@ -43,7 +43,7 @@ const Details = (props) => {
       }
       
     },[order])
-    var button_visibility=props.prop.orderable_status
+    var button_visibility=props.prop.orderable_status;
   
 
   
@@ -57,7 +57,7 @@ const orderProduct=async()=>{
     
   }
   var response=await Shop_API.onOrderProduct(name,phone,address,
-    phn_email,number,props.prop.id,props.prop.product_name,
+    phn_email,number,props.prop.id,props.prop.description,
     props.prop.price,props.prop.user_name,getParsedDate())
 
     if (response.response==="ok") {
@@ -83,7 +83,7 @@ if (props.status_code===1) {
       <View style={styless.main_view}>
         <View style={styless.image_view}>
           <Image style={{ width: "100%", height: "100%" }} resizeMode={'contain'} source={{ uri: props.prop.imagepath }} />
-          <Text>{props.prop.price}</Text>
+          {/* <Text>{props.prop.price}</Text> */}
         </View>
 
         <View style={{ width: '100%', height: '20%', flexDirection: 'row', justifyContent: 'space-around' }}>
