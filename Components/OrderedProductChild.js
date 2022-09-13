@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View,Dimensions
 } from "react-native";
 
 import Transition from "../Transition/Transition";
@@ -23,7 +23,21 @@ import { useToast } from "native-base";
 
 
 const OrderedProductChild = ({data,selected_id}) => {
-    const {user_name,id, description,  price, imagepath, currency }=data
+  const screenWidth = Dimensions.get('window').width
+        const screenHeight = Dimensions.get('window').height
+    const {user_name,id, description,  price, imagepath, currency,order_status }=data
+
+    const getBackColor = () => {
+      let color = "#e6e6fa";
+      if (order_status === 0) {
+          color = "#e6e6fa"
+      } else if (order_status === 1) {
+          color = "#20b2a0"
+      } else if (order_status === 2) {
+          color = "#66cc0c"
+      }
+      return color;
+  }
      
     
     return (
@@ -32,10 +46,11 @@ const OrderedProductChild = ({data,selected_id}) => {
         elevation: 5,
         margin: 5,
         borderRadius: 5,
-        backgroundColor: selected_id ? "gray" : "white",
+        backgroundColor: getBackColor(),
+       // backgroundColor: selected_id ? "gray" : "white",
         shadowOpacity: 2,
-        width: 160,
-        height: 200,
+        width: screenWidth/2.2,
+        height: screenHeight/3,
       }}>
         <View style={{ margin: 10, alignSelf: "center" }}>
           

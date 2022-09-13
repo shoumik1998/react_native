@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   TouchableWithFeedback,
   View,
+  Dimensions
 } from "react-native";
 import { Navigation } from "react-native-navigation";
 import { color } from "native-base/lib/typescript/theme/styled-system";
@@ -186,12 +187,12 @@ toastt.show({description:"heuuu"})
 
 
   render() {
+    const screenWidth = Dimensions.get('window').width
+        const screenHeight = Dimensions.get('window').height
 
     return (
       <NativeBaseProvider>
-        <View style={{flexDirection:'row',flex: 10,
-          
-          
+        <View style={{flexDirection:'row',flex: 10, width:screenWidth, height:screenHeight
           }}>
           <TouchableOpacity onPress={()=>{
             Navigation.mergeOptions(this.props.componentId, {

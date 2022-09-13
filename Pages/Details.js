@@ -94,14 +94,24 @@ if (props.status_code===1) {
              setOrder={setOrder}
               />
           }
+          {
+            props.prop.order_status===2 && 
+            <TouchableOpacity style={{
+              justifyContent: 'center', alignItems: 'center',
+              backgroundColor: "#0000ff", height: '30%', width: '40%', borderRadius: 6
+          }} onPress={() => { }}>
+              <Text style={{ color: "white" }}>Product Delivered</Text>
+          </TouchableOpacity>
+          }
 
           
           <TouchableOpacity onPress={() => stm(true)} style={{ width: "10%", height: "100%", justifyContent: 'center', marginTop: '8%' }} >
 
             <Image style={{ width: '100%', alignSelf: 'center', resizeMode: 'contain', tintColor: '#696969' }} source={require('../Assets/info256.png')} />
 
-
           </TouchableOpacity>
+
+          
 
         </View>
       </View>

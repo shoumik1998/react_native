@@ -71,13 +71,13 @@ const Side_menu_page = () => {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=>{gooo("OrderedProducts",null)}}>
+                <TouchableOpacity onPress={()=>{gooo("OrderedProducts",1)}}>
                     <View style={styles.view_styles}>
                         <Image style={styles.image_styles} source={require("../Assets/shopping-cart.png")} />
                         <Text style={styles.text_styles} >Orders</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => gooo("Login")} >
+                <TouchableOpacity onPress={() => gooo("OrderedProducts",4)} >
                     <View style={styles.view_styles}>
                         <Image style={styles.image_styles} source={require("../Assets/history.png")} />
                         <Text style={styles.text_styles} >History</Text>
