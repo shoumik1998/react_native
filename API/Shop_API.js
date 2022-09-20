@@ -177,8 +177,30 @@ const onOrderedProducts=async(status_code)=>{
     return response;
 }
 
+const onDelivered = async (product_id, status_code, delivering_date, phn_gmail, issue_date, date, user_name) => {
+    var response = null;
+    try {
+        await Api_Client.post("/set_delivering_status", {
+            product_id: product_id,
+            status_code: status_code,
+            delivering_date: delivering_date,
+            phn_gmail: phn_gmail,
+            issue_date: issue_date,
+            date: date,
+            user_name: user_name
+        }).then((json_response) => {
+            response = json_response.data
+            console.log(response)
+        })
+    } catch (error) {
+
+    }
+
+    return response;
+}
+
 
 
 
 export default  {onLoginAPI,onLocation_FetchingAPI,onFetch_After_Location_SearchAPI
-    ,single_shop_data,onShopName_FetchingAPI,onOrderProduct,onOrderedProducts};
+    ,single_shop_data,onShopName_FetchingAPI,onOrderProduct,onOrderedProducts,onDelivered};

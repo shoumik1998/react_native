@@ -47,14 +47,26 @@ const Details = (props) => {
   
 
   
+const setDeliveringStatus = async () => {
+  try {
+    var phn_email= await AsyncStorage.getItem("phn_gmail")
+  } catch (error) {
+   }
+    var response = await Shop_API.onDelivered(props.prop.id, 4, props.prop.delivering_date, phn_email,
+      props.prop.issue_date, getParsedDate(), props.prop.user_name)
+      if(response.response==="delivered"){
+        Alert.alert("delivered")
+      }else{
+        Alert.alert("failed")
+      }
 
+  }
   
 
 const orderProduct=async()=>{
   try {
    var phn_email= await AsyncStorage.getItem("phn_gmail")
-  } catch (error) {
-    
+ } catch (error) {
   }
   var response=await Shop_API.onOrderProduct(name,phone,address,
     phn_email,number,props.prop.id,props.prop.description,
@@ -68,6 +80,7 @@ const orderProduct=async()=>{
 
     }
 
+ 
 }
 
 if (props.status_code===1) {
@@ -83,35 +96,33 @@ if (props.status_code===1) {
       <View style={styless.main_view}>
         <View style={styless.image_view}>
           <Image style={{ width: "100%", height: "100%" }} resizeMode={'contain'} source={{ uri: props.prop.imagepath }} />
-          {/* <Text>{props.prop.price}</Text> */}
+         
         </View>
 
         <View style={{ width: '100%', height: '20%', flexDirection: 'row', justifyContent: 'space-around' }}>
-          {
-            button_visibility==1 && <NumericButton
-             setNumber={setNumber}
-             setName={setName} setPhone={setPhone} setAddress={setAddress}
-             setOrder={setOrder}
-              />
-          }
-          {
-            props.prop.order_status===2 && 
+        {props.prop.order_status === 2 &&
             <TouchableOpacity style={{
               justifyContent: 'center', alignItems: 'center',
               backgroundColor: "#0000ff", height: '30%', width: '40%', borderRadius: 6
-          }} onPress={() => { }}>
+            }} onPress={() => { setDeliveringStatus() }}>
               <Text style={{ color: "white" }}>Product Delivered</Text>
-          </TouchableOpacity>
+            </TouchableOpacity>}
+            {
+            button_visibility === 1 && <NumericButton
+              setNumber={setNumber}
+              setName={setName} setPhone={setPhone} setAddress={setAddress}
+              setOrder={setOrder}
+            />
           }
+            
 
           
           <TouchableOpacity onPress={() => stm(true)} style={{ width: "10%", height: "100%", justifyContent: 'center', marginTop: '8%' }} >
 
             <Image style={{ width: '100%', alignSelf: 'center', resizeMode: 'contain', tintColor: '#696969' }} source={require('../Assets/info256.png')} />
 
-          </TouchableOpacity>
 
-          
+          </TouchableOpacity>
 
         </View>
       </View>
@@ -189,3 +200,5 @@ const styless = StyleSheet.create({
 
 
 export default Details;
+
+  

@@ -36,6 +36,12 @@ const OrderedProductChild = ({data,selected_id}) => {
       } else if (order_status === 2) {
           color = "#66cc0c"
       }
+      else if (order_status === 3) {
+        color = "#ff0000"
+    }
+    else if (order_status === 4) {
+      color = "#0000ff"
+  }
       return color;
   }
      
@@ -47,7 +53,7 @@ const OrderedProductChild = ({data,selected_id}) => {
         margin: 5,
         borderRadius: 5,
         backgroundColor: getBackColor(),
-       // backgroundColor: selected_id ? "gray" : "white",
+       
         shadowOpacity: 2,
         width: screenWidth/2.2,
         height: screenHeight/3,
